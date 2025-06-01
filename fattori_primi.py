@@ -33,8 +33,34 @@ def fattori_primi(n, fattori=None, divisori=None):
     divisori.append(d)
     return fattori_primi(n // d, fattori, divisori)
 
+
+def fattori_primi_iterativo(n: int) -> tuple:
+    fattori = []
+
+    # Fattorizza tutti i 2
+    while n % 2 == 0:
+        fattori.append(2)
+        n //= 2
+
+    # Testa solo dispari da 3 a √n
+    d = 3
+    limite = math.isqrt(n)
+    while d <= limite:
+        while n % d == 0:
+            fattori.append(d)
+            n //= d
+            limite = math.isqrt(n)  # aggiorna √n dopo ogni divisione
+        d += 2
+
+    # Se è rimasto un primo > √n
+    if n > 1:
+        fattori.append(n)
+
+    return tuple(fattori)
+
 if __name__ == "__main__":
     # Esempio d'uso
     numero = 987654321987654321
-    print(f"Fattori primi di {numero}:", fattori_primi(numero))
+    print(f"R: Fattori primi di {numero}:", fattori_primi( numero) )
+    print(f"I: Fattori primi di {numero}:", fattori_primi_iterativo( numero) )
 
