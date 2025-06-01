@@ -57,14 +57,18 @@ def generate_rsa_keys(bits=512):
         q = generate_large_prime(bits)
     n = p * q
     phi = (p - 1) * (q - 1)
-    e = 65537
-    if gcd(e, phi) != 1:
-        # Se 65537 non va bene, scegliamo un altro valore
-        for cand in range(3, phi, 2):
-            if gcd(cand, phi) == 1:
-                e = cand
-                break
+    print("generate_rsa_keys\n  p:{0}, q:{1}\n  n=({0} * {1})={2}, phi=({0}-1) * ({1}-1)={3}\n".format( p, q, n, phi ) )
+
+    # Scelta dinamica di e: 1 < e < phi e coprimo con phi
+    while True:
+        e = random.randrange(3, phi)
+        n_gcd = gcd(e, phi)
+        print("  e:{}, gcd:{}\n".format( e, n_gcd ) )
+        if n_gcd == 1:
+            break
+
     d = modinv(e, phi)
+    print("  e:{}, d:{}, n:{}\n".format( e, d, n ) )
     return (e, d, n)
 
 # === 5. Crittografia / Decrittografia ===
@@ -77,7 +81,7 @@ def decrypt(c, d, n):
 # === 6. Esecuzione esempio ===
 if __name__ == "__main__":
     e, d, n = generate_rsa_keys(bits=3)  # 256 bit = veloce per test, ma poco sicuro
-    print(f"Chiave pubblica: (\ne={e}, \nn={n}\n)")
+    print(f"Chiave pubblica: (e={e}, n={n})")
     print(f"Chiave privata: (d={d}, n={n})")
 
     ## Messaggio da cifrare
