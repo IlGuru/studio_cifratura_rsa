@@ -33,7 +33,8 @@ def fattori_primi(n, fattori=None, divisori=None):
     divisori.append(d)
     return fattori_primi(n // d, fattori, divisori)
 
-# Esempio d'uso
-numero = 987654321987654321
-print(f"Fattori primi di {numero}:", fattori_primi(numero))
+if __name__ == "__main__":
+    # Esempio d'uso
+    numero = 987654321987654321
+    print(f"Fattori primi di {numero}:", fattori_primi(numero))
 
